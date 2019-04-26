@@ -1,0 +1,36 @@
+#interfaces R3
+
+auto lo
+iface lo inet loopback
+
+#CD5
+auto eth0 
+iface eth0 inet static 
+address 10.0.7.2
+network 10.0.7.0
+broadcast 10.0.7.3
+netmask 255.255.255.252
+
+#CD6
+auto eth1 
+iface eth1 inet static
+address 10.0.0.1
+network 10.0.0.0
+broadcast 10.0.1.255
+netmask 255.255.254.0
+
+#CD7
+auto eth2
+iface eth2 inet static
+address 10.0.2.1
+network 10.0.2.0
+broadcast 10.0.2.255
+netmask 255.255.255.0
+
+#route
+post-up route add -net 10.0.7.4/30 gw 10.0.7.1 #CD4
+post-up route add -net 10.0.4.0/23 gw 10.0.7.1 #dmz
+post-up route add -net 10.0.7.8/30 gw 10.0.7.1 #CD2
+post-up route add -net 10.0.6.0/24 gw 10.0.7.1 #green
+
+allow-hotplug eth0

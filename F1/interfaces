@@ -1,0 +1,38 @@
+#interfaces F1
+
+auto lo
+iface lo inet loopback
+
+#CD1
+auto eht1
+iface eth1 inet static
+address 10.0.6.1
+network 10.0.6.0
+broadcast 10.0.6.255
+netmask 255.255.255.0
+
+#CD2
+auto eth2
+iface eth2 inet static
+address 10.0.7.9
+network 10.0.7.8
+broadcast 10.0.7.11
+netmask 255.255.255.252
+
+#Tap
+auto eth0
+iface eth0 inet static
+address 10.0.7.14
+network 10.0.7.12
+broadcast 10.0.7.15
+netmask 255.255.255.252
+
+#route
+post-up route add -net 10.0.4.0/23 gw 10.0.7.10 #CD10+CD9
+post-up route add -net 10.0.7.4/30 gw 10.0.7.10 #CD4
+post-up route add -net 10.0.7.0/30 gw 10.0.7.10 #CD5
+post-up route add -net 10.0.0.0/22 gw 10.0.7.10 #CD6+CD7
+
+pre-up sh /etc/network/firewall.sh
+
+allow-hotplug eth0
